@@ -104,12 +104,10 @@ int compositeSort(vector<int>& arr){
     }
     return 1; //use quick sort
 }
-
 int main(){
     vector<int> ns = {500, 1000, 2000, 3000, 4000, 5000};
     string* word=new string[4];
     word[1]="quick"; word[2]="heap"; word[3]="merge";
-
     for (int n : ns) {
         vector<int> data = generateRandomData(n);
         int use=compositeSort(data);
