@@ -1,7 +1,6 @@
 
 ## Directory Structure
 ```plain
-CompositeSort
 Heap/
 ├── Heap Sort(average runtimes).cpp
 └── Heap Sort(worst-time criterion).cpp
@@ -16,4 +15,7 @@ Merge/
 Quick/
 ├── Quick Sort(average runtimes).cpp
 └── Quick Sort(worst-time criterion).cpp
+Uploaad/
+├── CompositeSort.cpp
+└── 
 ```

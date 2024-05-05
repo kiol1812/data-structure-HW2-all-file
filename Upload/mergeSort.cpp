@@ -1,11 +1,14 @@
+/* 41143263-吳柏毅 & 41143264-楊育哲 */
 #include <iostream>
 #include <vector>
 #include <ctime>
 #include <cstdlib>
 #include <algorithm>
-#include <fstream>
-
 using namespace std;
+vector<int> generateRandomData(int n);
+vector<int> generateWorstCaseData(int n);
+double measureRecursionTime(void (*func)(vector<int>&, int, int), vector<int>& arr, int l, int r);
+double measureIterativeTime(void (*func)(vector<int>&, int), vector<int>& arr, int size);
 
 void merge(vector<int>& arr, int l, int m, int r) {
     int n1=m-l+1, n2=r-m;
@@ -22,6 +25,7 @@ void merge(vector<int>& arr, int l, int m, int r) {
     while (j < n2) arr[k++]=R[j++];
 }
 
+// ! merge function (recursion)
 void mergeSortRecursion(std::vector<int>& arr, int l, int r) {
     if (l < r) {
         int m=l+(r-l)/2;
@@ -30,6 +34,8 @@ void mergeSortRecursion(std::vector<int>& arr, int l, int r) {
         merge(arr, l, m, r);
     }
 }
+
+// ! merge function (iterative)
 void mergeSortIterative(vector<int>& arr, int n){
     for(int currentSize=1; currentSize<n; currentSize*=2){
         for(int l=0; l<n-1; l+=2*currentSize){
@@ -39,13 +45,34 @@ void mergeSortIterative(vector<int>& arr, int n){
     }
 }
 
+// ! main function
+int main() {
+    srand(time(0)); 
+    vector<int> ns = {500, 1000, 2000, 3000, 4000, 5000};
+    cout << "Merge Sort Average Case Times:\n";
+    for (int n : ns) {
+        vector<int> data = generateRandomData(n);
+        double time = measureIterativeTime(mergeSortIterative, data, data.size());
+        // double time2 = measureRecursionTime(mergeSortRecursion, data, 0, data.size() - 1);
+        cout << "n = " << n << ": " << time << " seconds\n";
+        // cout << "Recursion, n = " << n << ": " << time2 << " seconds\n";
+    }
+    cout << "Merge Sort Worst Case Times:\n";
+    for (int n : ns) {
+        vector<int> data = generateWorstCaseData(n);
+        double time = measureIterativeTime(mergeSortIterative, data, data.size());
+        // double time = measureTime(mergeSort, data, 0, data.size() - 1);
+        cout << "n = " << n << ": " << time << " seconds\n";
+    }
+    return 0;
+}
+
 vector<int> generateRandomData(int n) {
     vector<int> data(n);
     for (int i = 0; i < n; ++i) data[i]=rand()%n+1;
     return data;
 }
-
-double measureTime(void (*func)(vector<int>&, int, int), vector<int>& arr, int l, int r) {
+double measureRecursionTime(void (*func)(vector<int>&, int, int), vector<int>& arr, int l, int r) {
     clock_t start, end;
     start = clock();
     func(arr, l, r);
@@ -59,7 +86,6 @@ double measureIterativeTime(void (*func)(vector<int>&, int), vector<int>& arr, i
     end = clock();
     return double(end-start)/CLOCKS_PER_SEC;
 }
-
 void inverse_merge(vector<int>& arr, int l, int m, int r) {
     int n1=m-l+1, n2=r-m;
     vector<int> L(n1), R(n2);
@@ -82,24 +108,4 @@ vector<int> generateWorstCaseData(int n){
     for(int i=0; i<n; i++) data[i]=i+1;
     inverse_mergeSort(data, 0, n-1);
     return data;
-}
-
-int main() {
-    srand(time(0)); 
-    ofstream ofs;
-    ofs.open("output.txt");
-    if(!ofs.is_open()) cout<<"file didn't opened";
-    cout << "Merge Sort Average Case Times:\n";
-    for (int times=0; times<20; times++) {
-        vector<int> data = generateWorstCaseData(1000000), data_copy(1000000);
-        // vector<int> data = generateRandomData(1000000), data_copy(1000000);
-        for(int i=0; i<1000000; i++) data_copy[i]=data[i];
-        double timeOfRecursionMethon = measureTime(mergeSortRecursion, data, 0, data.size() - 1);
-        double timeOfIterativeMethon = measureIterativeTime(mergeSortIterative, data, data.size());
-        ofs<<timeOfIterativeMethon<<","<<timeOfRecursionMethon<<",";
-        cout << "Recursion, n = " << 1000000 << ": " << timeOfRecursionMethon << " seconds\n";
-        cout << "Iterative, n = " << 1000000 << ": " << timeOfIterativeMethon << " seconds\n";
-    }
-    ofs.close();
-    return 0;
 }

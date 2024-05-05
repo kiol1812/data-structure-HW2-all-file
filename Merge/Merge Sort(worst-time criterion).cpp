@@ -65,14 +65,30 @@ double measureTime(void (*func)(vector<int>&, int, int), vector<int>& arr, int l
     end = clock();
     return double(end - start) / CLOCKS_PER_SEC;
 }
+void mergeSortIterative(vector<int>& arr, int n){
+    for(int currentSize=1; currentSize<n; currentSize*=2){
+        for(int l=0; l<n-1; l+=2*currentSize){
+            int mid=min(l+currentSize-1, n-1), r=min(l+currentSize*2-1, n-1);
+            merge(arr, l, mid, r);
+        }
+    }
+}
+double measureIterativeTime(void (*func)(vector<int>&, int), vector<int>& arr, int size) {
+    clock_t start, end;
+    start = clock();
+    func(arr, size);
+    end = clock();
+    return double(end-start)/CLOCKS_PER_SEC;
+}
 
 int main() {
     srand(time(0)); 
-    vector<int> ns = {500, 1000, 2000, 3000, 4000, 5000};
+    vector<int> ns = {500, 1000, 2000, 3000, 4000, 5000, 1000000};
     cout << "Merge Sort Worst Case Times:\n";
     for (int n : ns) {
         vector<int> data = generateWorstCaseDataMergeSort(n);
-        double time = measureTime(mergeSort, data, 0, data.size() - 1);
+        double time = measureIterativeTime(mergeSortIterative, data, data.size());
+        // double time = measureTime(mergeSort, data, 0, data.size() - 1);
         cout << "n = " << n << ": " << time << " seconds\n";
     }
     return 0;

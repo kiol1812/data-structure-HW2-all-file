@@ -51,6 +51,13 @@ double measureTime(void (*func)(vector<int>&, int, int), vector<int>& arr, int l
     end = clock();
     return double(end-start)/CLOCKS_PER_SEC;
 }
+double measureIterativeTime(void (*func)(vector<int>&, int), vector<int>& arr, int size) {
+    clock_t start, end;
+    start = clock();
+    func(arr, size);
+    end = clock();
+    return double(end-start)/CLOCKS_PER_SEC;
+}
 
 int main() {
     srand(time(0)); 
@@ -58,7 +65,8 @@ int main() {
     cout << "Merge Sort Average Case Times:\n";
     for (int n : ns) {
         vector<int> data = generateRandomData(n);
-        double time = measureTime(mergeSortRecursion, data, 0, data.size() - 1);
+        double time = measureIterativeTime(mergeSortIterative, data, data.size());
+        // double time = measureTime(mergeSortRecursion, data, 0, data.size() - 1);
         cout << "n = " << n << ": " << time << " seconds\n";
     }
     return 0;

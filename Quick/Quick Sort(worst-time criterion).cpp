@@ -42,7 +42,7 @@ void quickSort(vector<int>& arr, int low, int high) {
     }
 }
 
-vector<int> generateWorstCaseDataQuickSort(int n) {
+vector<int> generateWorstCaseDataQuickSort(int n) { //? this is incorrect
     vector<int> data;
     for (int i = n; i >= 1; --i) {
         data.push_back(i);
