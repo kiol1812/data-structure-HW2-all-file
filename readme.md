@@ -17,5 +17,8 @@ Quick/
 └── Quick Sort(worst-time criterion).cpp
 Uploaad/
 ├── CompositeSort.cpp
-└── 
+├── heapSort.cpp
+├── InsertSort.cpp
+└── quickSort.cpp
 ```
+主要檔案: upload中全部 + MergeSortCompare.cpp & output.txt
